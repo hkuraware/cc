@@ -1,10 +1,9 @@
-import { createTag } from "../../scripts/utils.js";
+import { createTag, getConfig } from "../../scripts/utils.js";
 
 const OFFER_ID_API_BASE = 'https://aos.adobe.io/offers/';
 const SELECTOR_ID_API_BASE = 'https://aos.adobe.io/offers:search.selector';
 const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
 const STAGE_SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.selector';
-const API_KEY = 'universalPromoTerm';
 const SERVICE_PROVIDERS = 'PROMO_TERMS';
 const PLACEHOLDERS = {
   campaignStart: ['{{campaignStart}}', '{{startDate}}', '{{ campaignStart }}', '{{ startDate }}'],
@@ -60,10 +59,11 @@ const createContainer = (el, promoTerms, termsHtml) => {
  */
 async function getTermsHTML(params, el, env, search) {
   const locationSearch = search ?? window.location.search;
+  const { universalPromoApiKey } = getConfig();
   let promoTerms;
   if (!params.get('offer_selector_ids')) {
     let fetchURL = `${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${params.get('offer_id')}${locationSearch}`;
-    fetchURL += params.get('api_key') ? '' : `&api_key=${API_KEY}`;
+    fetchURL += params.get('api_key') ? '' : `&api_key=${universalPromoApiKey}`;
     fetchURL += params.get('service_providers') ? '' : `&service_providers=${SERVICE_PROVIDERS}`;
 
     const res = await fetch(fetchURL);
@@ -72,7 +72,7 @@ async function getTermsHTML(params, el, env, search) {
     promoTerms = json[0]?.promo_terms;
   } else {
     let fetchURL = `${env === 'stage' ? STAGE_SELECTOR_ID_API_BASE : SELECTOR_ID_API_BASE}${locationSearch}`;
-    fetchURL += params.get('api_key') ? '' : `&api_key=${API_KEY}`;
+    fetchURL += params.get('api_key') ? '' : `&api_key=${universalPromoApiKey}`;
     fetchURL += params.get('service_providers') ? '' : `&service_providers=${SERVICE_PROVIDERS}`;
 
     const res = await fetch(fetchURL);

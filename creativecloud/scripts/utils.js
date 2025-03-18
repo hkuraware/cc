@@ -379,6 +379,7 @@ const CONFIG = {
     version: '1.83',
     onDemand: false,
   },
+  universalPromoApiKey: 'universalPromoTerm',
   htmlExclude: [
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
