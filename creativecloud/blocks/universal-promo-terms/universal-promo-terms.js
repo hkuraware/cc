@@ -1,3 +1,5 @@
+import { createTag } from "../../scripts/utils.js";
+
 const OFFER_ID_API_BASE = 'https://aos.adobe.io/offers/';
 const SELECTOR_ID_API_BASE = 'https://aos.adobe.io/offers:search.selector';
 const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
@@ -30,6 +32,23 @@ const replacePlaceholderText = (text, params) => {
   });
   return finalText;
 };
+
+const createContainer = (el, promoTerms, termsHtml) => {
+  const container = createTag('div', { class: 'container'});
+  container.textContent = el.innerHTML;
+
+  const header = createTag('h1');
+  header.textContent = promoTerms.header;
+
+  const termsParagraph = createTag('p');
+  termsParagraph.textContent = termsHtml;
+
+  container.append(header);
+  container.append(termsParagraph);
+
+  return container.innerHTML;
+}
+
 
 /**
  * Returns promo term HTML from API
@@ -66,7 +85,8 @@ async function getTermsHTML(params, el, env, search) {
     return false;
   }
   const termsHtml = replacePlaceholderText(promoTerms.text, params);
-  return `<div class="container">${el.innerHTML}<h1>${promoTerms.header}</h1><p>${termsHtml}</p></div>`;
+  const htmlString = createContainer(el, promoTerms, termsHtml);
+  return htmlString;
 }
 
 export default async function init(el, search) {
