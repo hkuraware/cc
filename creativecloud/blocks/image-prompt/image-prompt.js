@@ -19,7 +19,7 @@ function moveButton(promptLink, desktopButtonWrapper) {
     } else {
       desktopButtonWrapper.style.left = `${mouseX + 10}px`;
     }
-    desktopButtonWrapper.style.top = `${mouseY + 200}px`;
+    desktopButtonWrapper.style.top = `${mouseY + 20}px`;
   });
 }
 
